@@ -59,6 +59,7 @@ async function boot() {
 }
 
 const clock = new THREE.Clock();
+let dynN = 0, dynT = 0, dynLast = performance.now();
 function tick() {
   let dt = Math.min(clock.getDelta(), 0.05);
   G.input._poll();
@@ -75,6 +76,16 @@ function tick() {
   try { if (G.renderFrame) G.renderFrame(dt); else renderer.render(scene, camera); }
   catch (e) { reportError('render', e); G.renderFrame = null; }
   G.input._endFrame();
+  // Dynamic resolution: keep the game smooth on any computer (integrated GPUs included).
+  const nowMs = performance.now(); dynN++; dynT += Math.min(1, (nowMs - dynLast) / 1000); dynLast = nowMs;
+  if (dynT >= 1) {
+    const fps = dynN / dynT; dynN = 0; dynT = 0; G.fps = fps;
+    let pr = renderer.getPixelRatio();
+    const top = Math.min(window.devicePixelRatio, 1.5);
+    if (fps < 34 && pr > 0.45) pr = Math.max(0.45, pr * (fps < 18 ? 0.7 : 0.85));
+    else if (fps > 57 && pr < top) pr = Math.min(top, pr + 0.08);
+    if (pr !== renderer.getPixelRatio()) { renderer.setPixelRatio(pr); renderer.setSize(window.innerWidth, window.innerHeight); G.events.emit('resize', { w: window.innerWidth, h: window.innerHeight }); }
+  }
   if (showErrors && G.errors.length) { errBox.style.display = 'block'; errBox.textContent = G.errors.slice(-8).join('\n'); }
 }
 
