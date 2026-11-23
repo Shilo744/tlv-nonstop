@@ -27,7 +27,7 @@ window.addEventListener('resize', () => {
 });
 
 // Module load order matters: later modules may use earlier ones inside init().
-const ORDER = ['sky', 'world', 'fx', 'vehicles', 'player', 'npcs', 'police', 'missions', 'audio', 'hud', 'ai'];
+const ORDER = ['sky', 'world', 'fx', 'vehicles', 'player', 'npcs', 'life', 'police', 'missions', 'audio', 'hud', 'ai'];
 const modules = [];
 const bootText = document.getElementById('boottext'), bootFill = document.getElementById('bootfill');
 const errBox = document.getElementById('errors');

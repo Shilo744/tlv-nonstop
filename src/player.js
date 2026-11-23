@@ -4,7 +4,7 @@ import { G } from './core.js';
 
 // ---------------------------------------------------------------- tunables
 const MODEL_YAW = 0;        // extra yaw of the hero model. With AUTO_FACE the facing is measured from the foot bones and this is added on top.
-const AUTO_FACE = true;     // measure Foot->Toes direction at load so the model faces +Z at rotation.y = 0 (set false to trust MODEL_YAW only)
+const AUTO_FACE = false;     // measure Foot->Toes direction at load so the model faces +Z at rotation.y = 0 (set false to trust MODEL_YAW only)
 const GUN_YAW = 0;          // pistol.glb: barrel is along -Z (bbox z -0.21..0.05). Set Math.PI if it points backwards.
 
 const RADIUS = 0.4;
